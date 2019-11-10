@@ -47,30 +47,31 @@ public class MainServlet extends HttpServlet {
 				rd.forward(request, response); 
 			}
 			else {
-				response.getWriter().append("<script type=\"text/javascript\">"
-						+ "alert('The username or password is incorrect, please try again');"
-						+ "</script>");
-				rd = request.getRequestDispatcher("/index.html");
-				rd.forward(request, response);
+				// Redirect to login page
+				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=index.html'>"
+						+ "<p style='color:red;'>User name or pass word is incorrect, try agian</p>");
 			}
 		}
+		// Redirects to add patient html file
 		else if (request.getParameter("addPat") != null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
 			rd.forward(request, response);
 		}
+		// Redirects to modPat.jsp
 		else if (request.getParameter("viewPat") != null) {
 			String pId = request.getParameter("id");
+			// check if ID exists
 			if (myData.getPatient(pId) != null) {
 				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
 				rd.forward(request,response);  
 			}
 			else {
-				response.getWriter().append("<script type=\"text/javascript\">"
-						+ "alert('That ID does not exist, please try again');"
-						+ "</script>");
-				response.sendRedirect("using.html");
+				// Redirect to using if ID is wrong or does not exist
+				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=using.html'>"
+						+ "<p style='color:red;'>ID is incorrect, try again</p>");
 			}
 		}
+		// default to login
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   
 			rd.forward(request, response);
