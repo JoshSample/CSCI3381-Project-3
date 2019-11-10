@@ -28,14 +28,12 @@ public class MainServlet extends HttpServlet {
     public MainServlet() {
         super();
         myData = new AceDataManager("./data.txt" , "./project3/data.txt");
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		// This if checks login info
 		if (request.getParameter("doLogin") != null) {
 			RequestDispatcher rd;
@@ -49,8 +47,28 @@ public class MainServlet extends HttpServlet {
 				rd.forward(request, response); 
 			}
 			else {
+				response.getWriter().append("<script type=\"text/javascript\">"
+						+ "alert('The username or password is incorrect, please try again');"
+						+ "</script>");
 				rd = request.getRequestDispatcher("/index.html");
 				rd.forward(request, response);
+			}
+		}
+		else if (request.getParameter("addPat") != null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
+			rd.forward(request, response);
+		}
+		else if (request.getParameter("viewPat") != null) {
+			String pId = request.getParameter("id");
+			if (myData.getPatient(pId) != null) {
+				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
+				rd.forward(request,response);  
+			}
+			else {
+				response.getWriter().append("<script type=\"text/javascript\">"
+						+ "alert('That ID does not exist, please try again');"
+						+ "</script>");
+				response.sendRedirect("using.html");
 			}
 		}
 		else {
@@ -63,7 +81,6 @@ public class MainServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
