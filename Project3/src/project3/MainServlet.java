@@ -84,10 +84,22 @@ public class MainServlet extends HttpServlet {
 			String id = request.getParameter("addID");
 			p = new Patient(id, name);
 			if (name == null || id == null) {
-				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=using.html'>"
+				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=AddPat.html'>"
 						+ "<p style='color:red;'>Please enter a valid name or ID</p>");
 			}
-			
+			else if (myData.getPatient(id) != null) {
+				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=AddPat.html'>"
+						+ "<p style='color:red;'>Patient ID exists, enter another one.</p>");
+			}
+			else {
+				myData.addPatient(p);
+				RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
+				rd.forward(request, response);
+			}
+		}
+		else if (request.getParameter("back") != null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
+			rd.forward(request, response);
 		}
 		// default to login
 		else {
