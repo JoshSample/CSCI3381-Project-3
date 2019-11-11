@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import project1.*;
 
 /**
  * Servlet implementation class MainServlet
@@ -20,14 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/MainServlet")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private AceDataManager myData;
+	private AceDataManagerADT myData;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public MainServlet() {
         super();
-        myData = new AceDataManager("./data.txt" , "./project3/data.txt");
+        myData = new AceDataManager("./data.txt" , "./project1/data.txt");
     }
 
 	/**
@@ -52,7 +53,7 @@ public class MainServlet extends HttpServlet {
 						+ "<p style='color:red;'>User name or pass word is incorrect, try agian</p>");
 			}
 		}
-		// Redirects to add patient html file
+		// Redirects to AddPat.html if add patient button is selected
 		else if (request.getParameter("addPat") != null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
 			rd.forward(request, response);
@@ -70,6 +71,23 @@ public class MainServlet extends HttpServlet {
 				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=using.html'>"
 						+ "<p style='color:red;'>ID is incorrect, try again</p>");
 			}
+		}
+		// logout redirects to login page
+		else if (request.getParameter("doLogout") != null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   
+			rd.forward(request, response);
+		}
+		// Add Patient
+		else if (request.getParameter("doAdd") != null) {
+			Patient p;
+			String name = request.getParameter("addName"); 
+			String id = request.getParameter("addID");
+			p = new Patient(id, name);
+			if (name == null || id == null) {
+				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=using.html'>"
+						+ "<p style='color:red;'>Please enter a valid name or ID</p>");
+			}
+			
 		}
 		// default to login
 		else {

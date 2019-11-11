@@ -1,7 +1,0 @@
-111,Brian
-333,Alex
-741,Susie,Parental separation or divorce
-123456,Terry,Physical abuse
-456,Peter
-122234,Jeff,Physical abuse,Emotional neglect
-4545454,Larry,Physical abuse

@@ -2,9 +2,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Add Patient</title>
 </head>
 <body>
-
+<form action="http://localhost:8080/Project3/MainServlet" method="get">
+	<span style="margin-left:1.3em">ID:</span>
+	<input type="text" name="addID"><br><br>
+	Name:
+	<input type="text" name ="addName"><br><br>
+	<input type="submit" value="Add Patient" name="doAdd">
+</form>
 </body>
 </html>
