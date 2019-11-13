@@ -117,12 +117,12 @@ public class MainServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 		// Adds aces to patient
-//		else if (request.getParameter("aceButton") != null) {
-//			String[] aces = request.getParameterValues("aces");
+		else if (request.getParameter("aceButton") != null) {
+			String[] aces = request.getParameterValues("aces");
 //			for (int i = 0; i < aces.length; i++) {
 //				
 //			}
-//		}
+		}
 		// default to login
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   
