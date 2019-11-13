@@ -6,6 +6,7 @@ package project3;
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,14 +22,13 @@ import project1.*;
 @WebServlet("/MainServlet")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private AceDataManagerADT myData;
+	private AceDataManager myData = new AceDataManager("./data.txt", "./project1/data.txt");
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public MainServlet() {
         super();
-        myData = new AceDataManager("./data.txt" , "./project1/data.txt");
     }
 
 	/**
@@ -49,7 +49,7 @@ public class MainServlet extends HttpServlet {
 			}
 			else {
 				// Redirect to login page
-				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=index.html'>"
+				response.getWriter().append("<meta http-equiv='refresh' content='3;URL=index.html'>"
 						+ "<p style='color:red;'>User name or pass word is incorrect, try agian</p>");
 			}
 		}
@@ -63,12 +63,25 @@ public class MainServlet extends HttpServlet {
 			String pId = request.getParameter("id");
 			// check if ID exists
 			if (myData.getPatient(pId) != null) {
+				PatientADT p = myData.getPatient(pId);
+				request.setAttribute("id",p.getId()); 
+				request.setAttribute("name", p.getName());
+				String[] aces = myData.getAceList();
+				String label1="aces"; 
+				String label1Value = "<select name=\"aces\">"; 	
+				for (int i = 0; i < aces.length; i++) {
+					label1Value += "<option value=\""+aces[i]+"\">"+aces[i]+"</option>";
+				}
+				label1Value += "</select>"; 
+				request.setAttribute(label1,label1Value);
+				ArrayList<String> risk = myData.getRiskFactors(p.getACEs());
+				request.setAttribute("risks", risk);
 				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
 				rd.forward(request,response);  
 			}
 			else {
 				// Redirect to using if ID is wrong or does not exist
-				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=using.html'>"
+				response.getWriter().append("<meta http-equiv='refresh' content='3;URL=using.html'>"
 						+ "<p style='color:red;'>ID is incorrect, try again</p>");
 			}
 		}
@@ -84,15 +97,16 @@ public class MainServlet extends HttpServlet {
 			String id = request.getParameter("addID");
 			p = new Patient(id, name);
 			if (name == null || id == null) {
-				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=AddPat.html'>"
+				response.getWriter().append("<meta http-equiv='refresh' content='3;URL=AddPat.html'>"
 						+ "<p style='color:red;'>Please enter a valid name or ID</p>");
 			}
 			else if (myData.getPatient(id) != null) {
-				response.getWriter().append("<meta http-equiv='refresh' content='4;URL=AddPat.html'>"
+				response.getWriter().append("<meta http-equiv='refresh' content='3;URL=AddPat.html'>"
 						+ "<p style='color:red;'>Patient ID exists, enter another one.</p>");
 			}
 			else {
 				myData.addPatient(p);
+				myData.writeToFile("./data.txt");
 				RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
 				rd.forward(request, response);
 			}
@@ -101,6 +115,7 @@ public class MainServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
 			rd.forward(request, response);
 		}
+		
 		// default to login
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   
