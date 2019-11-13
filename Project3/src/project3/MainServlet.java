@@ -66,16 +66,7 @@ public class MainServlet extends HttpServlet {
 				PatientADT p = myData.getPatient(pId);
 				request.setAttribute("id",p.getId()); 
 				request.setAttribute("name", p.getName());
-				String[] aces = myData.getAceList();
-				String label1="aces"; 
-				String label1Value = "<select name=\"aces\">"; 	
-				for (int i = 0; i < aces.length; i++) {
-					label1Value += "<option value=\""+aces[i]+"\">"+aces[i]+"</option>";
-				}
-				label1Value += "</select>"; 
-				request.setAttribute(label1,label1Value);
-				ArrayList<String> risk = myData.getRiskFactors(p.getACEs());
-				request.setAttribute("risks", risk);
+				request.setAttribute("risk", myData.getRiskFactors(p.getACEs()));
 				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
 				rd.forward(request,response);  
 			}
@@ -111,11 +102,15 @@ public class MainServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
+		// goes back a page
 		else if (request.getParameter("back") != null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
 			rd.forward(request, response);
 		}
-		
+		// add aces to a patient
+		else if (request.getParameter("aceButton") != null) {
+			
+		}
 		// default to login
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   

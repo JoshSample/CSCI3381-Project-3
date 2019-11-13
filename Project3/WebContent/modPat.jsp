@@ -7,16 +7,16 @@
 <title>View Patient</title>
 </head>
 <body>
+<%@page import="java.util.ArrayList"%>
 <form action="http://localhost:8080/Project3/MainServlet" method="get"> 
   <% String id=(String)request.getAttribute("id"); %>
   <% String name=(String)request.getAttribute("name"); %> 
   <% String aces=(String)request.getAttribute("aces"); %> 
-  <% String[] risk=(String[])request.getAttribute("risk"); %>
+  <% ArrayList<String> risk=(ArrayList<String>)request.getAttribute("risk"); %>
     ID:<%=id %><br>
  	Name:<%=name%><br> 
- 	ACES:<%=aces%><br>
  	Risk Factors:<%=risk%><br>
- 	<input type="submit" value="Process" name="processButton">  
+ 	<input type="submit" value="Add ACES" name="aceButton">  
  	</form> 
 </body>
 </html>
