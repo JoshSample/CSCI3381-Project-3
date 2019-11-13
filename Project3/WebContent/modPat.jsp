@@ -14,9 +14,11 @@
   <% String aces=(String)request.getAttribute("aces"); %> 
   <% ArrayList<String> risk=(ArrayList<String>)request.getAttribute("risk"); %>
     ID:<%=id %><br>
- 	Name:<%=name%><br> 
+ 	Name:<%=name%><br>
+ 	ACEs:<br><%=aces%>
  	Risk Factors:<%=risk%><br>
  	<input type="submit" value="Add ACES" name="aceButton">  
+ 	<input type="submit" value="Back" name="back">
  	</form> 
 </body>
 </html>

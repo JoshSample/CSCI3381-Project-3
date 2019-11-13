@@ -61,11 +61,20 @@ public class MainServlet extends HttpServlet {
 		// Redirects to modPat.jsp
 		else if (request.getParameter("viewPat") != null) {
 			String pId = request.getParameter("id");
-			// check if ID exists
+			// check if ID exists, if true goto modPat.jsp
 			if (myData.getPatient(pId) != null) {
+				String[] aces = myData.getAceList();
 				PatientADT p = myData.getPatient(pId);
 				request.setAttribute("id",p.getId()); 
 				request.setAttribute("name", p.getName());
+				String label1Value = "<name=\"aces\">";
+				for (int i = 0; i < aces.length; i++) {
+					if (p.getACEs().contains(aces[i]))
+						label1Value += "<input type=\"checkbox\" value=\""+aces[i]+"\"checked>"+aces[i]+"<br>";
+					else
+						label1Value += "<input type=\"checkbox\" value=\""+aces[i]+"\">"+aces[i]+"<br>";;
+				}			 
+				request.setAttribute("aces", label1Value);
 				request.setAttribute("risk", myData.getRiskFactors(p.getACEs()));
 				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
 				rd.forward(request,response);  
@@ -106,10 +115,6 @@ public class MainServlet extends HttpServlet {
 		else if (request.getParameter("back") != null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
 			rd.forward(request, response);
-		}
-		// add aces to a patient
-		else if (request.getParameter("aceButton") != null) {
-			
 		}
 		// default to login
 		else {
