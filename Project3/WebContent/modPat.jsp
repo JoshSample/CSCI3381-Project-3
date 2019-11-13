@@ -17,7 +17,7 @@
  	Name:<%=name%><br>
  	ACEs:<br><%=aces%>
  	Risk Factors:<%=risk%><br>
- 	<input type="submit" value="Add ACES" name="aceButton">  
+ 	<input type="button" value="Add ACES" onclick="addACE(p)" name="aceButton">  
  	<input type="submit" value="Back" name="back">
  	</form> 
 </body>

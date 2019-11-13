@@ -70,9 +70,9 @@ public class MainServlet extends HttpServlet {
 				String label1Value = "<name=\"aces\">";
 				for (int i = 0; i < aces.length; i++) {
 					if (p.getACEs().contains(aces[i]))
-						label1Value += "<input type=\"checkbox\" value=\""+aces[i]+"\"checked>"+aces[i]+"<br>";
+						label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\"checked>"+aces[i]+"<br>";
 					else
-						label1Value += "<input type=\"checkbox\" value=\""+aces[i]+"\">"+aces[i]+"<br>";;
+						label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\">"+aces[i]+"<br>";;
 				}			 
 				request.setAttribute("aces", label1Value);
 				request.setAttribute("risk", myData.getRiskFactors(p.getACEs()));
@@ -116,6 +116,13 @@ public class MainServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
 			rd.forward(request, response);
 		}
+		// Adds aces to patient
+//		else if (request.getParameter("aceButton") != null) {
+//			String[] aces = request.getParameterValues("aces");
+//			for (int i = 0; i < aces.length; i++) {
+//				
+//			}
+//		}
 		// default to login
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("/index.html");   
