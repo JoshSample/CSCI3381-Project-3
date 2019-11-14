@@ -23,12 +23,13 @@ import project1.*;
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AceDataManager myData = new AceDataManager("./data.txt", "./project1/data.txt");
-       
+    private String id;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public MainServlet() {
         super();
+        id = "";
     }
 
 	/**
@@ -61,6 +62,7 @@ public class MainServlet extends HttpServlet {
 		// Redirects to modPat.jsp
 		else if (request.getParameter("viewPat") != null) {
 			String pId = request.getParameter("id");
+			id = pId;
 			// check if ID exists, if true goto modPat.jsp
 			if (myData.getPatient(pId) != null) {
 				String[] aces = myData.getAceList();
@@ -106,7 +108,7 @@ public class MainServlet extends HttpServlet {
 			}
 			else {
 				myData.addPatient(p);
-				myData.writeToFile("./data.txt");
+				myData.writeToFile("./data.txt", "./project1/data.txt");
 				RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
 				rd.forward(request, response);
 			}
@@ -118,10 +120,15 @@ public class MainServlet extends HttpServlet {
 		}
 		// Adds aces to patient
 		else if (request.getParameter("aceButton") != null) {
-			String[] aces = request.getParameterValues("aces");
-//			for (int i = 0; i < aces.length; i++) {
-//				
-//			}
+			String[] aces = (String[])request.getParameterValues("aces");
+			PatientADT p = myData.getPatient(id);
+			for (int i = 0; i < aces.length; i++) {
+				p.addACE(aces[i]);
+			}
+			myData.addPatient(p);
+			myData.writeToFile("./data.txt", "./project1/data.txt");
+			RequestDispatcher rd=request.getRequestDispatcher("/using.html");   
+			rd.forward(request,response); 
 		}
 		// default to login
 		else {
