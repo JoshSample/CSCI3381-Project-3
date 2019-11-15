@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +10,8 @@
 <form action="http://localhost:8080/Project3/MainServlet" method="get"> 
 	<input type="submit" value="Add Patient" name="addPat"><br><br>
 	<input type="submit" value="View Patient" name="viewPat">
-	ID:<input type="text" name="id"><br><br><br>
+	<% String patients=(String)request.getAttribute("selectionList"); %> 
+	ID:<%=patients%><br><br><br>
  	<input type="submit" value="Logout" name="doLogout">  
 </form> 
 </body>

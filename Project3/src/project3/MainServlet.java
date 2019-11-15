@@ -45,7 +45,17 @@ public class MainServlet extends HttpServlet {
 			// In reality this should probably be a hashmap or database type thing
 			// For simplicity, I'm leaving it hardcoded as md and pw
 			if (name.equals("md") && password.equals("pw")) {
-				rd = request.getRequestDispatcher("/using.html");
+				String label1="selectionList"; 
+				String label1Value = "<select name=\"patients\">";   
+				String s = myData.toString();
+				String[] tokens = s.split("\n");
+				for (int i = 0; i < tokens.length; i++) {
+					String id = (tokens[i].split(","))[0].split(" ")[1];
+					label1Value += "<option value=\""+id+"\">"+id+"</option>";
+				}			
+				label1Value += "</select>"; 
+				request.setAttribute(label1,label1Value); 
+				rd = request.getRequestDispatcher("/using.jsp");
 				rd.forward(request, response); 
 			}
 			else {
@@ -61,31 +71,23 @@ public class MainServlet extends HttpServlet {
 		}
 		// Redirects to modPat.jsp
 		else if (request.getParameter("viewPat") != null) {
-			String pId = request.getParameter("id");
+			String pId = request.getParameter("patients");
 			id = pId;
-			// check if ID exists, if true goto modPat.jsp
-			if (myData.getPatient(pId) != null) {
-				String[] aces = myData.getAceList();
-				PatientADT p = myData.getPatient(pId);
-				request.setAttribute("id",p.getId()); 
-				request.setAttribute("name", p.getName());
-				String label1Value = "<name=\"aces\">";
-				for (int i = 0; i < aces.length; i++) {
-					if (p.getACEs().contains(aces[i]))
-						label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\"checked>"+aces[i]+"<br>";
-					else
-						label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\">"+aces[i]+"<br>";;
-				}			 
-				request.setAttribute("aces", label1Value);
-				request.setAttribute("risk", myData.getRiskFactors(p.getACEs()));
-				RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
-				rd.forward(request,response);  
-			}
-			else {
-				// Redirect to using if ID is wrong or does not exist
-				response.getWriter().append("<meta http-equiv='refresh' content='3;URL=using.html'>"
-						+ "<p style='color:red;'>ID is incorrect, try again</p>");
-			}
+			String[] aces = myData.getAceList();
+			PatientADT p = myData.getPatient(pId);
+			request.setAttribute("id",p.getId()); 
+			request.setAttribute("name", p.getName());
+			String label1Value = "<name=\"aces\">";
+			for (int i = 0; i < aces.length; i++) {
+				if (p.getACEs().contains(aces[i]))
+					label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\"checked>"+aces[i]+"<br>";
+				else
+					label1Value += "<input type=\"checkbox\" name=\"aces\" value=\""+aces[i]+"\">"+aces[i]+"<br>";;
+			}			 
+			request.setAttribute("aces", label1Value);
+			request.setAttribute("risk", myData.getRiskFactors(p.getACEs()));
+			RequestDispatcher rd=request.getRequestDispatcher("/modPat.jsp");   
+			rd.forward(request,response);  
 		}
 		// logout redirects to login page
 		else if (request.getParameter("doLogout") != null) {
@@ -113,9 +115,19 @@ public class MainServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
-		// goes back a page
+		// goes back to using.jsp
 		else if (request.getParameter("back") != null) {
-			RequestDispatcher rd = request.getRequestDispatcher("/using.html");   
+			String label1="selectionList"; 
+			String label1Value = "<select name=\"patients\">";   
+			String s = myData.toString();
+			String[] tokens = s.split("\n");
+			for (int i = 0; i < tokens.length; i++) {
+				String id = (tokens[i].split(","))[0].split(" ")[1];
+				label1Value += "<option value=\""+id+"\">"+id+"</option>";
+			}			
+			label1Value += "</select>"; 
+			request.setAttribute(label1,label1Value); 
+			RequestDispatcher rd = request.getRequestDispatcher("/using.jsp");   
 			rd.forward(request, response);
 		}
 		// Adds aces to patient
@@ -127,7 +139,17 @@ public class MainServlet extends HttpServlet {
 			}
 			myData.addPatient(p);
 			myData.writeToFile("./data.txt", "./project1/data.txt");
-			RequestDispatcher rd=request.getRequestDispatcher("/using.html");   
+			String label1="selectionList"; 
+			String label1Value = "<select name=\"patients\">";   
+			String s = myData.toString();
+			String[] tokens = s.split("\n");
+			for (int i = 0; i < tokens.length; i++) {
+				String id = (tokens[i].split(","))[0].split(" ")[1];
+				label1Value += "<option value=\""+id+"\">"+id+"</option>";
+			}			
+			label1Value += "</select>"; 
+			request.setAttribute(label1,label1Value); 
+			RequestDispatcher rd=request.getRequestDispatcher("/using.jsp");   
 			rd.forward(request,response); 
 		}
 		// default to login
