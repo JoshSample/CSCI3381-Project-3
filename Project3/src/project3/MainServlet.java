@@ -22,7 +22,7 @@ import project1.*;
 @WebServlet("/MainServlet")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private AceDataManager myData = new AceDataManager("./data.txt", "./project1/data.txt");
+	private AceDataManager myData = new AceDataManager("./data.txt", "./project3/data.txt");
     private String id;
     /**
      * @see HttpServlet#HttpServlet()
@@ -110,7 +110,6 @@ public class MainServlet extends HttpServlet {
 			}
 			else {
 				myData.addPatient(p);
-				myData.writeToFile("./data.txt", "./project1/data.txt");
 				RequestDispatcher rd = request.getRequestDispatcher("/AddPat.html");   
 				rd.forward(request, response);
 			}
@@ -138,7 +137,6 @@ public class MainServlet extends HttpServlet {
 				p.addACE(aces[i]);
 			}
 			myData.addPatient(p);
-			myData.writeToFile("./data.txt", "./project1/data.txt");
 			String label1="selectionList"; 
 			String label1Value = "<select name=\"patients\">";   
 			String s = myData.toString();
